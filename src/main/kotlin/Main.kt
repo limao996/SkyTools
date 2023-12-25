@@ -14,7 +14,7 @@ import java.io.File
 import java.net.URI
 
 const val appTitle = "SkyTools"
-val githubUri: URI = URI.create("https://github.com/limao996")
+val githubUri: URI = URI.create("https://github.com/limao996/SkyTools")
 
 lateinit var myWindow: ComposeWindow
 lateinit var component: Component

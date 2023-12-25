@@ -13,10 +13,7 @@ object TopBarManager {
 	fun init() {
 		right.add(View("Github") {
 			Action(
-				"开源仓库",
-				"limao996",
-				"链接：https://github.com/limao996/SkyTool",
-				icon = "icons/github@20x20.svg"
+				"开源仓库", "limao996", "$githubUri", icon = "icons/github@20x20.svg"
 			) {
 				val dp = Desktop.getDesktop()
 				if (dp.isSupported(Desktop.Action.BROWSE)) {
