@@ -1,3 +1,4 @@
+
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.unit.DpSize
@@ -8,6 +9,7 @@ import io.kanro.compose.jetbrains.expui.theme.LightTheme
 import io.kanro.compose.jetbrains.expui.window.JBWindow
 import manager.core.ThemeManager
 import manager.ui.PopupManager
+import manager.ui.drawer.DrawerManager
 import manager.ui.topbar.TopBarManager
 import ui.Body
 import ui.topbar.TopBar
@@ -47,6 +49,14 @@ fun main() {
 			Body()
 			//Popup
 			PopupManager.show()
+		}
+		DrawerManager.load {
+			LeftFirst { }
+			LeftLast { }
+			RightFirst { }
+			RightLast { }
+			BottomFirst { }
+			BottomLast { }
 		}
 	}
 

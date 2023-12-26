@@ -1,15 +1,11 @@
 package ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
-import androidx.compose.foundation.gestures.detectVerticalDragGestures
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import io.kanro.compose.jetbrains.expui.control.*
 import io.kanro.compose.jetbrains.expui.style.LocalAreaColors
@@ -18,6 +14,7 @@ import ui.common.*
 import ui.drawer.*
 import ui.sidebar.LeftBar
 import ui.sidebar.RightBar
+import utils.boundsRegulate
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -28,47 +25,20 @@ fun Body() {
 			//左栏
 			LeftBar()
 			VDivider()
-			Column(Modifier.fillMaxSize().weight(1F).pointerInput(Unit) {
-				detectVerticalDragGestures { _, dragAmount ->
-					if (BottomDrawerManager.isShow) BottomDrawerRegulator.drag(
-						dragAmount
+			Column(
+				Modifier.fillMaxSize().weight(1F).boundsRegulate(
+					if (BottomDrawerManager.isShow) BottomDrawerRegulator else null,
+				)
+			) {
+				Row(
+					Modifier.fillMaxSize().weight(1F).boundsRegulate(
+						if (LeftDrawerManager.isShow) LeftDrawerRegulator else null,
+						if (RightDrawerManager.isShow) RightDrawerRegulator else null,
 					)
-				}
-			}.pointerInput(Unit) {
-				awaitPointerEventScope {
-					while (true) {
-						val event = awaitPointerEvent()
-						if (BottomDrawerManager.isShow) BottomDrawerRegulator.hover(
-							event
-						)
-					}
-				}
-			}) {
-				Row(Modifier.fillMaxSize().weight(1F).pointerInput(Unit) {
-					detectHorizontalDragGestures { _, dragAmount ->
-						if (LeftDrawerManager.isShow) LeftDrawerRegulator.drag(
-							dragAmount
-						)
-						if (RightDrawerManager.isShow) RightDrawerRegulator.drag(
-							dragAmount
-						)
-					}
-				}.pointerInput(Unit) {
-					awaitPointerEventScope {
-						while (true) {
-							val event = awaitPointerEvent()
-							if (LeftDrawerManager.isShow) LeftDrawerRegulator.hover(
-								event
-							)
-							if (RightDrawerManager.isShow) RightDrawerRegulator.hover(
-								event
-							)
-						}
-					}
-				}) {
+				) {
 					//左抽屉
 					LeftDrawer()
-					VDivider(LeftDrawerRegulator.lock)
+					VDivider(LeftDrawerRegulator.isActivate)
 					//标签页
 					Column(
 						Modifier
@@ -76,7 +46,11 @@ fun Body() {
 							.weight(1F)
 							.background(LocalAreaColors.current.startBorderColor),
 					) {
-						Row(Modifier.height(40.dp).selectableGroup()) {
+						Row(
+							Modifier.height(40.dp).selectableGroup().horizontalScroll(
+								rememberScrollState()
+							)
+						) {
 							var selected by remember { mutableStateOf(0) }
 							CloseableTab(
 								selected == 0,
@@ -121,11 +95,11 @@ fun Body() {
 						HSubDivider(false)
 					}
 					//右抽屉
-					VDivider(RightDrawerRegulator.lock)
+					VDivider(RightDrawerRegulator.isActivate)
 					RightDrawer()
 				}
 				//下抽屉
-				HDivider(BottomDrawerRegulator.lock)
+				HDivider(BottomDrawerRegulator.isActivate)
 				BottomDrawer()
 			}
 			//右栏

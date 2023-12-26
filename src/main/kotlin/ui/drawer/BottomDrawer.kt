@@ -1,15 +1,13 @@
 package ui.drawer
 
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.boundsInParent
-import androidx.compose.ui.layout.onGloballyPositioned
 import manager.ui.drawer.BottomDrawerManager
 import ui.common.VDivider
+import utils.boundsMeasure
+import utils.boundsRegulate
 
 
 @Composable
@@ -20,30 +18,19 @@ fun BottomDrawer() {
 	val modifier = Modifier.fillMaxWidth().height(BottomDrawerManager.height)
 	if (splitA.isShow || splitB.isShow) Row(
 		if (!(splitA.isShow && splitB.isShow)) modifier
-		else modifier.onGloballyPositioned { coordinates ->
-			bottomDrawerBounds = coordinates.boundsInParent()
-		}.pointerInput(Unit) {
-			detectHorizontalDragGestures { _, dragAmount ->
-				BottomDrawerSplitRegulator.drag(dragAmount)
-			}
-		}.pointerInput(Unit) {
-			awaitPointerEventScope {
-				while (true) {
-					val event = awaitPointerEvent()
-					BottomDrawerSplitRegulator.hover(event)
-				}
-			}
-		},
+		else modifier
+			.boundsMeasure(BottomDrawerRegulator)
+			.boundsRegulate(BottomDrawerSplitRegulator),
 	) {
 		if (splitA.isShow) Column(
-			Modifier.fillMaxHeight().weight(1F + BottomDrawerManager.splitWeight)
+			Modifier
+				.fillMaxHeight()
+				.weight(1F + BottomDrawerManager.splitWeight)
+				.boundsMeasure(BottomDrawerSplitRegulator)
 		) {
 			BottomDrawerManager.splitA?.invoke(splitA)
 		}
-		if (splitA.isShow && splitB.isShow) VDivider(BottomDrawerSplitRegulator.lock,
-			modifier = Modifier.onGloballyPositioned { coordinates ->
-				bottomSplitDrawerBounds = coordinates.boundsInParent()
-			})
+		if (splitA.isShow && splitB.isShow) VDivider(BottomDrawerSplitRegulator.isActivate)
 		if (splitB.isShow) Column(
 			Modifier.fillMaxHeight().weight(1F - BottomDrawerManager.splitWeight)
 		) {
