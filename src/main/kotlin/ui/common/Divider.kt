@@ -18,11 +18,11 @@ fun HDivider(
 	modifier: Modifier = Modifier,
 ) {
 	Spacer(
-		modifier.background(
-			if (isHide) Color.Companion.Transparent
+		Modifier.background(
+			if (isHide) Color.Transparent
 			else if (isHighlight) LocalAreaColors.current.focusColor
 			else LocalAreaColors.current.endBorderColor
-		).height(if (isHighlight) 3.dp else 1.dp).fillMaxWidth()
+		).height(if (isHighlight) 3.dp else 1.dp).fillMaxWidth().then(modifier)
 	)
 }
 
@@ -33,34 +33,36 @@ fun VDivider(
 	modifier: Modifier = Modifier,
 ) {
 	Spacer(
-		modifier.background(
-			if (isHide) Color.Companion.Transparent
+		Modifier.background(
+			if (isHide) Color.Transparent
 			else if (isHighlight) LocalAreaColors.current.focusColor
 			else LocalAreaColors.current.endBorderColor
-		).width(if (isHighlight) 3.dp else 1.dp).fillMaxHeight()
+		).width(if (isHighlight) 3.dp else 1.dp).fillMaxHeight().then(modifier)
 	)
 }
 
 @Composable
-fun HSubDivider(usePadding: Boolean = true) {
+fun HSubDivider(
+	usePadding: Boolean = true,
+	modifier: Modifier = Modifier,
+) {
 	Spacer(
-		Modifier
-			.padding(horizontal = if (usePadding) 8.dp else 0.dp)
-			.background(
-				if (ThemeManager.current.isDark()) DarkTheme.Grey4
-				else LightTheme.Grey9
-			)
-			.height(1.dp)
-			.fillMaxWidth()
+		Modifier.padding(horizontal = if (usePadding) 8.dp else 0.dp).background(
+			if (ThemeManager.current.isDark()) DarkTheme.Grey4
+			else LightTheme.Grey9
+		).height(1.dp).fillMaxWidth().then(modifier)
 	)
 }
 
 @Composable
-fun VSubDivider(usePadding: Boolean = true) {
+fun VSubDivider(
+	usePadding: Boolean = true,
+	modifier: Modifier = Modifier,
+) {
 	Spacer(
 		Modifier.padding(vertical = if (usePadding) 8.dp else 0.dp).background(
 			if (ThemeManager.current.isDark()) DarkTheme.Grey4
 			else LightTheme.Grey9
-		).width(1.dp).fillMaxHeight()
+		).width(1.dp).fillMaxHeight().then(modifier)
 	)
 }

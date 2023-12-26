@@ -8,15 +8,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
-import manager.ui.drawer.DrawerScope
 import manager.ui.drawer.RightDrawerManager
 import ui.common.HDivider
 
 
 @Composable
 fun RightDrawer() {
-	val splitA = rememberSaveable { DrawerScope(RightDrawerManager, true) }
-	val splitB = rememberSaveable { DrawerScope(RightDrawerManager, false) }
+	val splitA = rememberSaveable { DrawerContentScope(RightDrawerManager, true) }
+	val splitB = rememberSaveable { DrawerContentScope(RightDrawerManager, false) }
 
 	val modifier = Modifier.fillMaxHeight().width(RightDrawerManager.width)
 	if (splitA.isShow || splitB.isShow) Column(

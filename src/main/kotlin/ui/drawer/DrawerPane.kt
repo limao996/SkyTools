@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import io.kanro.compose.jetbrains.expui.control.*
 import io.kanro.compose.jetbrains.expui.style.LocalAreaColors
 import io.kanro.compose.jetbrains.expui.style.LocalMediumTextStyle
-import manager.ui.drawer.DrawerScope
 import ui.common.FixedTooltip
 import ui.common.HDivider
 import  ui.drawer.DividerMode.Auto
@@ -19,7 +18,7 @@ import  ui.drawer.DividerMode.Auto
 
 @LayoutScopeMarker
 @Immutable
-open class DrawerPaneScope(val upScope: DrawerScope) {
+open class DrawerPaneScope(val upScope: DrawerContentScope) {
 	var showCloseAction by mutableStateOf(false)
 	lateinit var scrollState: ScrollState
 }
@@ -29,11 +28,11 @@ open class DrawerPaneScope(val upScope: DrawerScope) {
 object DrawerPaneToolBarScope
 
 @Composable
-fun DrawerScope.DrawerPane(
+fun DrawerContentScope.DrawerPane(
 	modifier: Modifier = Modifier,
 	dividerMode: DividerMode = Auto,
 	enableScroll: Boolean = true,
-	toolbar: @Composable DrawerPaneScope.() -> Unit,
+	toolbar: (@Composable DrawerPaneScope.() -> Unit)? = null,
 	header: (@Composable DrawerPaneScope.() -> Unit)? = null,
 	footer: (@Composable DrawerPaneScope.() -> Unit)? = null,
 	content: (@Composable DrawerPaneScope.() -> Unit)? = null,
@@ -45,7 +44,7 @@ fun DrawerScope.DrawerPane(
 		drawerPaneScope.showCloseAction = it
 	}) {
 		//工具栏
-		drawerPaneScope.toolbar()
+		toolbar?.let { drawerPaneScope.it() }
 
 		if (header != null) {
 			HDivider(
@@ -129,8 +128,7 @@ fun DrawerPaneScope.ToolBar(
 			DrawerPaneToolBarScope.actions()
 			if (drawerPaneScope.showCloseAction && !hideCloseAction) {
 				DrawerPaneToolBarScope.Action(
-					"隐藏",
-					"icons/hide.svg"
+					"隐藏", "icons/hide.svg"
 				) {
 					drawerPaneScope.upScope.hide()
 				}

@@ -1,5 +1,6 @@
 package ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
@@ -19,6 +20,7 @@ import ui.sidebar.LeftBar
 import ui.sidebar.RightBar
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Body() {
 	Column(Modifier.fillMaxSize()) {

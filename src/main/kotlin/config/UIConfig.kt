@@ -7,7 +7,7 @@ import utils.MapDB
 object UIConfig : MapDB("UIConfig") {
 	override val autoCommit = true
 
-	var theme by Node { ThemeManager.Dark }
+	var theme by Node { ThemeManager.System }
 	var leftDrawerWidth by Node { 400.dp.value }
 	var leftDrawerSplitWeight by Node { 0F }
 	var rightDrawerWidth by Node { 500.dp.value }

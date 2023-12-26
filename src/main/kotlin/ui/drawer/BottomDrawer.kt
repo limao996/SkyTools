@@ -9,14 +9,13 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
 import manager.ui.drawer.BottomDrawerManager
-import manager.ui.drawer.DrawerScope
 import ui.common.VDivider
 
 
 @Composable
 fun BottomDrawer() {
-	val splitA = rememberSaveable { DrawerScope(BottomDrawerManager, true) }
-	val splitB = rememberSaveable { DrawerScope(BottomDrawerManager, false) }
+	val splitA = rememberSaveable { DrawerContentScope(BottomDrawerManager, true) }
+	val splitB = rememberSaveable { DrawerContentScope(BottomDrawerManager, false) }
 
 	val modifier = Modifier.fillMaxWidth().height(BottomDrawerManager.height)
 	if (splitA.isShow || splitB.isShow) Row(

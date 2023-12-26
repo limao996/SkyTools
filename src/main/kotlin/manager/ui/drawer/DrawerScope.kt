@@ -1,14 +1,30 @@
 package manager.ui.drawer
 
-import androidx.compose.foundation.layout.LayoutScopeMarker
-import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Composable
+import ui.drawer.DrawerContentScope
 
-@LayoutScopeMarker
-@Immutable
-class DrawerScope(private val manager: BaseSubDrawerManager, private val isSplitA: Boolean) {
-	val isShow: Boolean
-		get() = if (isSplitA) manager.splitA != null else manager.splitB != null
+object DrawerScope {
+	fun LeftLast(content: @Composable DrawerContentScope.() -> Unit) {
+		DrawerManager.leftLast = content
+	}
 
-	fun hide() = if (isSplitA) manager.splitA = null else manager.splitB = null
+	fun LeftFirst(content: @Composable DrawerContentScope.() -> Unit) {
+		DrawerManager.leftFirst = content
+	}
 
+	fun RightLast(content: @Composable DrawerContentScope.() -> Unit) {
+		DrawerManager.rightLast = content
+	}
+
+	fun RightFirst(content: @Composable DrawerContentScope.() -> Unit) {
+		DrawerManager.rightFirst = content
+	}
+
+	fun BottomLast(content: @Composable DrawerContentScope.() -> Unit) {
+		DrawerManager.bottomLast = content
+	}
+
+	fun BottomFirst(content: @Composable DrawerContentScope.() -> Unit) {
+		DrawerManager.bottomFirst = content
+	}
 }

@@ -1,3 +1,4 @@
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -6,7 +7,8 @@ import io.kanro.compose.jetbrains.expui.theme.DarkTheme
 import io.kanro.compose.jetbrains.expui.theme.LightTheme
 import io.kanro.compose.jetbrains.expui.window.JBWindow
 import manager.core.ThemeManager
-import manager.ui.TopBarManager
+import manager.ui.PopupManager
+import manager.ui.topbar.TopBarManager
 import ui.Body
 import ui.topbar.TopBar
 import java.awt.Component
@@ -15,9 +17,12 @@ import java.net.URI
 
 const val appTitle = "SkyTools"
 val githubUri: URI = URI.create("https://github.com/limao996/SkyTools")
+val giteeUri: URI = URI.create("https://gitee.com/limao996/SkyTools")
 
 lateinit var myWindow: ComposeWindow
 lateinit var component: Component
+
+@OptIn(ExperimentalComposeUiApi::class)
 fun main() {
 	File("assets").apply {
 		if (!exists()) {
@@ -40,6 +45,8 @@ fun main() {
 			component = myWindow.getComponent(0)
 			//主窗格
 			Body()
+			//Popup
+			PopupManager.show()
 		}
 	}
 
