@@ -1,6 +1,8 @@
 package ui.drawer
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import config.UIConfig
@@ -8,18 +10,18 @@ import manager.ui.drawer.BottomDrawerManager
 import utils.BoundsRegulator
 
 object BottomDrawerRegulator : BoundsRegulator(
-	Direction.Top,
+	Direction.Top, manager = BottomDrawerManager
 ) {
 	var isActivate by mutableStateOf(false)
 
 	override val onDrag: (Float) -> Boolean = {
-		BottomDrawerManager.height -= Dp(it)
+		BottomDrawerManager.size -= Dp(it)
 
-		if (BottomDrawerManager.height < 150.dp) {
-			BottomDrawerManager.height = 150.dp
+		if (BottomDrawerManager.size < 150.dp) {
+			BottomDrawerManager.size = 150.dp
 			true
-		} else if (BottomDrawerManager.height > 500.dp) {
-			BottomDrawerManager.height = 500.dp
+		} else if (BottomDrawerManager.size > 500.dp) {
+			BottomDrawerManager.size = 500.dp
 			true
 		} else false
 	}
@@ -28,6 +30,6 @@ object BottomDrawerRegulator : BoundsRegulator(
 	}
 	override val onDragEnd = {
 		isActivate = false
-		UIConfig.bottomDrawerHeight = BottomDrawerManager.height.value
+		UIConfig.bottomDrawerHeight = BottomDrawerManager.size.value
 	}
 }

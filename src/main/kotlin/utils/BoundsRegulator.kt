@@ -2,19 +2,26 @@ package utils
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.input.pointer.*
+import androidx.compose.ui.input.pointer.PointerEvent
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import component
-import utils.BoundsRegulator.Direction.*
+import manager.ui.drawer.BaseSubDrawerManager
+import utils.BoundsRegulator.Direction.Bottom
+import utils.BoundsRegulator.Direction.Left
+import utils.BoundsRegulator.Direction.Right
+import utils.BoundsRegulator.Direction.Top
 import java.awt.Cursor
 
 open class BoundsRegulator(
 	private val direction: Direction,
 	private val boundsWidth: Dp = 8.dp,
 	private val offset: Dp = 0.5.dp,
+	open val manager: BaseSubDrawerManager,
 	open val onHover: ((Boolean) -> Unit) = {},
 	open val onDrag: ((Float) -> Boolean) = { false },
 	open val onDragStart: (() -> Unit) = {},
@@ -86,22 +93,25 @@ open class BoundsRegulator(
 	}
 }
 
-fun Modifier.boundsMeasure(vararg regulator: BoundsRegulator?) =
+fun Modifier.boundsMeasure(vararg regulator: BoundsRegulator) =
 	if (regulator.isNotEmpty()) onGloballyPositioned { coordinates ->
-		for (r in regulator) if (r != null) {
-			r.bounds = coordinates.boundsInParent()
+		for (r in regulator) {
+			if (r.manager.isShow) r.bounds = coordinates.boundsInParent()
 		}
 	} else this
 
 
-fun Modifier.boundsRegulate(vararg regulator: BoundsRegulator?): Modifier {
+fun Modifier.boundsRegulate(vararg regulator: BoundsRegulator): Modifier {
 	if (regulator.isEmpty()) return this
 
 	return pointerInput(Unit) {
 		awaitPointerEventScope {
 			while (true) {
 				val event = awaitPointerEvent()
-				for (r in regulator) r?.pointEvent(event)
+				for (r in regulator) {
+					if (r.manager.isShow)
+						r.pointEvent(event)
+				}
 			}
 		}
 	}

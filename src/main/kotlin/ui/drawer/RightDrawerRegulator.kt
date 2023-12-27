@@ -1,6 +1,8 @@
 package ui.drawer
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import config.UIConfig
@@ -9,17 +11,17 @@ import utils.BoundsRegulator
 
 
 object RightDrawerRegulator : BoundsRegulator(
-	Direction.Left,
+	Direction.Left, manager = RightDrawerManager
 ) {
 	var isActivate by mutableStateOf(false)
 
 	override val onDrag: (Float) -> Boolean = {
-		RightDrawerManager.width -= Dp(it)
-		if (RightDrawerManager.width < 200.dp) {
-			RightDrawerManager.width = 200.dp
+		RightDrawerManager.size -= Dp(it)
+		if (RightDrawerManager.size < 200.dp) {
+			RightDrawerManager.size = 200.dp
 			true
-		} else if (RightDrawerManager.width > 800.dp) {
-			RightDrawerManager.width = 800.dp
+		} else if (RightDrawerManager.size > 800.dp) {
+			RightDrawerManager.size = 800.dp
 			true
 		} else false
 	}
@@ -28,6 +30,6 @@ object RightDrawerRegulator : BoundsRegulator(
 	}
 	override val onDragEnd = {
 		isActivate = false
-		UIConfig.rightDrawerWidth = RightDrawerManager.width.value
+		UIConfig.rightDrawerWidth = RightDrawerManager.size.value
 	}
 }

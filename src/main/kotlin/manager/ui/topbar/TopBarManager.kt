@@ -2,16 +2,12 @@ package manager.ui.topbar
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.ui.unit.dp
 import config.UIConfig
 import giteeUri
 import githubUri
-import io.kanro.compose.jetbrains.expui.control.Label
 import manager.core.ThemeManager
 import manager.ui.PopupManager
-import ui.common.JBIcon
 import ui.common.MenuItem
-import ui.common.Message
 import ui.common.Title
 import ui.topbar.Action
 import ui.topbar.TopBarScope
@@ -28,25 +24,15 @@ object TopBarManager {
 				if (dp.isSupported(Desktop.Action.BROWSE)) {
 					PopupManager.open {
 						Title("开源仓库")
-						MenuItem({
+						MenuItem(
+							"icons/gitee.svg", "Gitee", "$giteeUri"
+						) {
 							dp.browse(giteeUri)
-						}, message = {
-							Message("$giteeUri")
-						}) {
-							JBIcon(
-								"icons/gitee.svg", 16.dp
-							)
-							Label("Gitee")
 						}
-						MenuItem({
+						MenuItem(
+							"icons/github.svg", "Github", "$githubUri"
+						) {
 							dp.browse(githubUri)
-						}, message = {
-							Message("$githubUri")
-						}) {
-							JBIcon(
-								"icons/github.svg", 16.dp
-							)
-							Label("Github")
 						}
 					}
 				}

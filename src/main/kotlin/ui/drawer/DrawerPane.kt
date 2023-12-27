@@ -2,24 +2,37 @@ package ui.drawer
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
-import io.kanro.compose.jetbrains.expui.control.*
+import config.UIConfig
+import io.kanro.compose.jetbrains.expui.control.ActionButton
+import io.kanro.compose.jetbrains.expui.control.Label
+import io.kanro.compose.jetbrains.expui.control.onHover
 import io.kanro.compose.jetbrains.expui.style.LocalAreaColors
 import io.kanro.compose.jetbrains.expui.style.LocalMediumTextStyle
-import ui.common.FixedTooltip
-import ui.common.HDivider
-import  ui.drawer.DividerMode.Auto
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import manager.ui.PopupManager
+import manager.ui.drawer.BottomDrawerManager
+import manager.ui.drawer.LeftDrawerManager
+import manager.ui.drawer.RightDrawerManager
+import ui.common.*
+import ui.drawer.DividerMode.Auto
 
 
 @LayoutScopeMarker
 @Immutable
 open class DrawerPaneScope(val upScope: DrawerContentScope) {
-	var showCloseAction by mutableStateOf(false)
+	var showAction by mutableStateOf(false)
 	lateinit var scrollState: ScrollState
 }
 
@@ -41,7 +54,7 @@ fun DrawerContentScope.DrawerPane(
 	drawerPaneScope.scrollState = rememberScrollState()
 
 	Column(modifier.fillMaxSize().onHover {
-		drawerPaneScope.showCloseAction = it
+		drawerPaneScope.showAction = it
 	}) {
 		//工具栏
 		toolbar?.let { drawerPaneScope.it() }
@@ -104,11 +117,13 @@ fun DrawerPaneScope.ActionBar(
 	) { DrawerPaneToolBarScope.content() }
 }
 
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun DrawerPaneScope.ToolBar(
-	modifier: Modifier = Modifier,
 	title: String? = null,
 	hideCloseAction: Boolean = false,
+	modifier: Modifier = Modifier,
+	items: (@Composable PopupScope.() -> Unit)? = null,
 	actions: @Composable DrawerPaneToolBarScope.() -> Unit = {},
 	content: @Composable DrawerPaneToolBarScope.() -> Unit = {},
 ) {
@@ -120,13 +135,39 @@ fun DrawerPaneScope.ToolBar(
 	) {
 		if (title != null) Label(title, style = LocalMediumTextStyle.current)
 		DrawerPaneToolBarScope.content()
+		Spacer(Modifier.weight(1F))
 		Row(
-			Modifier.fillMaxSize(),
-			horizontalArrangement = Arrangement.End,
+			horizontalArrangement = Arrangement.spacedBy(4.dp),
 			verticalAlignment = Alignment.CenterVertically
 		) {
-			DrawerPaneToolBarScope.actions()
-			if (drawerPaneScope.showCloseAction && !hideCloseAction) {
+			if (drawerPaneScope.showAction && !hideCloseAction) {
+				DrawerPaneToolBarScope.actions()
+				DrawerPaneToolBarScope.Action(
+					"更多", "icons/more.svg"
+				) {
+					PopupManager.open {
+						if (items != null) {
+							items()
+							Divider()
+						}
+						MenuItem("icons/recovery.svg", "恢复默认") {
+							drawerPaneScope.upScope.manager.apply {
+								size = defaultSize
+								splitWeight = defaultSplitWeight
+							}
+							GlobalScope.launch {
+								UIConfig.apply {
+									leftDrawerWidth = LeftDrawerManager.size.value
+									leftDrawerSplitWeight = LeftDrawerManager.splitWeight
+									rightDrawerWidth = RightDrawerManager.size.value
+									rightDrawerSplitWeight = RightDrawerManager.splitWeight
+									bottomDrawerHeight = BottomDrawerManager.size.value
+									bottomDrawerSplitWeight = BottomDrawerManager.splitWeight
+								}
+							}
+						}
+					}
+				}
 				DrawerPaneToolBarScope.Action(
 					"隐藏", "icons/hide.svg"
 				) {
@@ -146,7 +187,9 @@ fun DrawerPaneToolBarScope.Action(
 		ActionButton(
 			onClick, Modifier.fillMaxSize(), shape = RectangleShape,
 		) {
-			Icon(icon, modifier = Modifier.size(20.dp))
+			Box(contentAlignment = Alignment.Center) {
+				JBIcon(icon, 16.dp)
+			}
 		}
 	}
 }
@@ -160,7 +203,9 @@ fun DrawerPaneScope.ToolBarAction(
 		ActionButton(
 			onClick, Modifier.fillMaxSize(), shape = RectangleShape,
 		) {
-			Icon(icon, modifier = Modifier.size(20.dp))
+			Box(contentAlignment = Alignment.Center) {
+				JBIcon(icon, 16.dp)
+			}
 		}
 	}
 }

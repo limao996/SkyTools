@@ -1,6 +1,9 @@
 package ui.drawer
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -15,14 +18,16 @@ fun LeftDrawer() {
 	val splitA = rememberSaveable { DrawerContentScope(LeftDrawerManager, true) }
 	val splitB = rememberSaveable { DrawerContentScope(LeftDrawerManager, false) }
 
-	if (splitA.isShow || splitB.isShow) {
-		val modifier = Modifier.fillMaxHeight().width(LeftDrawerManager.width)
-		Column(
+	val modifier = if (splitA.isShow || splitB.isShow) Modifier.boundsMeasure(LeftDrawerRegulator)
+	else Modifier
 
-			if (!(splitA.isShow && splitB.isShow)) modifier
-			else modifier
-				.boundsMeasure(LeftDrawerRegulator)
+	if (splitA.isShow || splitB.isShow) {
+		Column(
+			Modifier
+				.fillMaxHeight()
+				.width(LeftDrawerManager.size)
 				.boundsRegulate(LeftDrawerSplitRegulator)
+				.then(modifier)
 		) {
 			if (splitA.isShow) Column(
 				Modifier

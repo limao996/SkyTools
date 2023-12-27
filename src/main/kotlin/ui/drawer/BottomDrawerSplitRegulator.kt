@@ -1,12 +1,14 @@
 package ui.drawer
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import config.UIConfig
 import manager.ui.drawer.BottomDrawerManager
 import utils.BoundsRegulator
 
 object BottomDrawerSplitRegulator : BoundsRegulator(
-	Direction.Right,
+	Direction.Right, manager = BottomDrawerManager
 ) {
 	var isActivate by mutableStateOf(false)
 

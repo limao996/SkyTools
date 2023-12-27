@@ -27,7 +27,9 @@ import manager.core.ThemeManager
 @Immutable
 class PopupScope(
 	val onDismissRequest: () -> Unit,
-)
+) {
+	var hasIcon = false
+}
 
 @Composable
 fun PopupScope.MenuItem(
@@ -52,8 +54,8 @@ fun PopupScope.MenuItem(
 		focused.value = it.isFocused
 	}.clickable(
 		enabled = enabled, onClick = {
-			onClick()
 			onDismissRequest()
+			onClick()
 		}, interactionSource = interactionSource, indication = HoverOrPressedIndication(shape)
 	).fillMaxWidth().padding(contentPadding).defaultMinSize(minHeight = 24.dp),
 		verticalAlignment = Alignment.CenterVertically,
@@ -64,6 +66,35 @@ fun PopupScope.MenuItem(
 		this@MenuItem.message()
 	}
 }
+
+@Composable
+fun PopupScope.MenuItem(
+	icon: String? = null,
+	label: String,
+	message: String? = null,
+	enabled: Boolean = true,
+	contentPadding: PaddingValues = PaddingValues(horizontal = 8.dp),
+	shape: Shape = RoundedCornerShape(3.dp),
+	interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+	onClick: () -> Unit,
+) {
+	MenuItem(onClick, enabled, contentPadding, shape, interactionSource, {
+		if (message != null) Message(message)
+	}) {
+		if (icon != null) {
+			hasIcon = true
+			JBIcon(
+				icon, 16.dp
+			)
+		} else if (hasIcon) Spacer(Modifier.size(16.dp))
+		if (enabled) Label(label)
+		else Label(
+			label, color = if (ThemeManager.current.isDark()) DarkTheme.Grey6
+			else LightTheme.Grey6
+		)
+	}
+}
+
 
 @Composable
 fun PopupScope.Divider() {

@@ -16,9 +16,6 @@ import androidx.compose.ui.unit.dp
 import io.kanro.compose.jetbrains.expui.control.CloseableTab
 import io.kanro.compose.jetbrains.expui.control.Label
 import io.kanro.compose.jetbrains.expui.style.LocalAreaColors
-import manager.ui.drawer.BottomDrawerManager
-import manager.ui.drawer.LeftDrawerManager
-import manager.ui.drawer.RightDrawerManager
 import ui.common.HDivider
 import ui.common.HSubDivider
 import ui.common.JBIcon
@@ -38,13 +35,12 @@ fun Body() {
 			VDivider()
 			Column(
 				Modifier.fillMaxSize().weight(1F).boundsRegulate(
-					if (BottomDrawerManager.isShow) BottomDrawerRegulator else null,
+					BottomDrawerRegulator,
 				)
 			) {
 				Row(
 					Modifier.fillMaxSize().weight(1F).boundsRegulate(
-						if (LeftDrawerManager.isShow) LeftDrawerRegulator else null,
-						if (RightDrawerManager.isShow) RightDrawerRegulator else null,
+						LeftDrawerRegulator, RightDrawerRegulator,
 					)
 				) {
 					//左抽屉

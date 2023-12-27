@@ -11,7 +11,11 @@ open class MapDB(private val name: String) : ConcurrentMap<String, Any?>, Closea
 
 	companion object {
 		private val db =
-			DBMaker.fileDB("assets/data.db").closeOnJvmShutdown().checksumHeaderBypass()
+			DBMaker
+				.fileDB("assets/data.db")
+				.closeOnJvmShutdown()
+				.checksumHeaderBypass()
+				.fileMmapEnableIfSupported()
 				.fileChannelEnable().cleanerHackEnable().make()
 		private val hookSet = HashSet<MapDB>()
 

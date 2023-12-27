@@ -1,6 +1,10 @@
 package ui.drawer
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -15,7 +19,7 @@ fun BottomDrawer() {
 	val splitA = rememberSaveable { DrawerContentScope(BottomDrawerManager, true) }
 	val splitB = rememberSaveable { DrawerContentScope(BottomDrawerManager, false) }
 
-	val modifier = Modifier.fillMaxWidth().height(BottomDrawerManager.height)
+	val modifier = Modifier.fillMaxWidth().height(BottomDrawerManager.size)
 	if (splitA.isShow || splitB.isShow) Row(
 		if (!(splitA.isShow && splitB.isShow)) modifier
 		else modifier
