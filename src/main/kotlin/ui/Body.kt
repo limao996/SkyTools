@@ -1,23 +1,34 @@
 package ui
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.kanro.compose.jetbrains.expui.control.*
+import io.kanro.compose.jetbrains.expui.control.CloseableTab
+import io.kanro.compose.jetbrains.expui.control.Label
 import io.kanro.compose.jetbrains.expui.style.LocalAreaColors
-import manager.ui.drawer.*
-import ui.common.*
+import manager.ui.drawer.BottomDrawerManager
+import manager.ui.drawer.LeftDrawerManager
+import manager.ui.drawer.RightDrawerManager
+import ui.common.HDivider
+import ui.common.HSubDivider
+import ui.common.JBIcon
+import ui.common.VDivider
 import ui.drawer.*
 import ui.sidebar.LeftBar
 import ui.sidebar.RightBar
 import utils.boundsRegulate
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Body() {
 	Column(Modifier.fillMaxSize()) {
@@ -62,7 +73,7 @@ fun Body() {
 									.fillMaxHeight()
 									.align(Alignment.CenterVertically)
 							) {
-								Icon("icons/meetNewUi.svg")
+								JBIcon("icons/meetNewUi.svg", 16.dp)
 								Label("First")
 							}
 							CloseableTab(
@@ -75,7 +86,7 @@ fun Body() {
 									.fillMaxHeight()
 									.align(Alignment.CenterVertically)
 							) {
-								Icon("icons/meetNewUi.svg")
+								JBIcon("icons/meetNewUi.svg", 16.dp)
 								Label("Second")
 							}
 							CloseableTab(
@@ -88,7 +99,7 @@ fun Body() {
 									.fillMaxHeight()
 									.align(Alignment.CenterVertically)
 							) {
-								Icon("icons/meetNewUi.svg")
+								JBIcon("icons/meetNewUi.svg", 16.dp)
 								Label("Third")
 							}
 						}

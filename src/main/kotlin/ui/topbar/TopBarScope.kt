@@ -2,14 +2,24 @@ package ui.topbar
 
 import androidx.compose.foundation.Indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.LayoutScopeMarker
 import androidx.compose.foundation.layout.size
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
-import io.kanro.compose.jetbrains.expui.control.*
+import io.kanro.compose.jetbrains.expui.control.ActionButton
+import io.kanro.compose.jetbrains.expui.control.ActionButtonColors
+import io.kanro.compose.jetbrains.expui.control.HoverOrPressedIndication
+import io.kanro.compose.jetbrains.expui.control.LocalActionButtonColors
 import ui.common.FixedTooltip
+import ui.common.JBIcon
 
 @LayoutScopeMarker
 @Immutable
@@ -39,7 +49,11 @@ fun TopBarScope.Action(
 			interactionSource = interactionSource,
 			colors = colors,
 		) {
-			Icon(icon, markerColor = markerColor)
+			Box(contentAlignment = Alignment.Center) {
+				JBIcon(
+					icon, markerColor = markerColor
+				)
+			}
 		}
 	}
 }

@@ -2,13 +2,14 @@ package manager.ui.topbar
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.ui.unit.dp
 import config.UIConfig
 import giteeUri
 import githubUri
-import io.kanro.compose.jetbrains.expui.control.Icon
 import io.kanro.compose.jetbrains.expui.control.Label
 import manager.core.ThemeManager
 import manager.ui.PopupManager
+import ui.common.JBIcon
 import ui.common.MenuItem
 import ui.common.Title
 import ui.topbar.Action
@@ -23,7 +24,7 @@ object TopBarManager {
 				"开源仓库",
 				"limao996",
 				"Gitee: $giteeUri\nGithub: $githubUri",
-				icon = "icons/github@20x20.svg"
+				icon = "icons/github.svg"
 			) {
 				val dp = Desktop.getDesktop()
 				if (dp.isSupported(Desktop.Action.BROWSE)) {
@@ -32,13 +33,17 @@ object TopBarManager {
 						MenuItem({
 							dp.browse(giteeUri)
 						}) {
-							Icon("icons/gitee.svg")
+							JBIcon(
+								"icons/gitee.svg", 16.dp
+							)
 							Label("Gitee")
 						}
 						MenuItem({
 							dp.browse(githubUri)
 						}) {
-							Icon("icons/github.svg")
+							JBIcon(
+								"icons/github.svg", 16.dp
+							)
 							Label("Github")
 						}
 					}
@@ -51,9 +56,9 @@ object TopBarManager {
 					ThemeManager.Light -> "日间模式"
 					ThemeManager.Dark -> "夜间模式"
 				}, icon = when (ThemeManager.current) {
-					ThemeManager.System -> "icons/systemTheme@20x20.svg"
-					ThemeManager.Light -> "icons/lightTheme@20x20.svg"
-					ThemeManager.Dark -> "icons/darkTheme@20x20.svg"
+					ThemeManager.System -> "icons/systemTheme.svg"
+					ThemeManager.Light -> "icons/lightTheme.svg"
+					ThemeManager.Dark -> "icons/darkTheme.svg"
 				}
 			) {
 				ThemeManager.current = when (ThemeManager.current) {

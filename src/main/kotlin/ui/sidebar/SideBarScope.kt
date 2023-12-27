@@ -1,17 +1,19 @@
 package ui.sidebar
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.LayoutScopeMarker
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import io.kanro.compose.jetbrains.expui.control.Icon
 import io.kanro.compose.jetbrains.expui.control.ToolBarActionButton
 import io.kanro.compose.jetbrains.expui.style.LocalErrorAreaColors
 import ui.common.FixedTooltip
 import ui.common.FixedTooltipPlacement
+import ui.common.JBIcon
 
 
 @LayoutScopeMarker
@@ -30,7 +32,7 @@ fun SideBarScope.Action(
 	message: String? = null,
 	detail: String? = null,
 	icon: String,
-	enableMarker: Boolean = false,
+	marker: Boolean = false,
 	onClick: SideBarScope.() -> Unit,
 ) {
 	FixedTooltip(
@@ -45,10 +47,12 @@ fun SideBarScope.Action(
 			{ this.onClick() },
 			modifier = Modifier.size(30.dp),
 		) {
-			Icon(
-				icon,
-				markerColor = if (enableMarker) LocalErrorAreaColors.current.text else Color.Unspecified
-			)
+			Box(contentAlignment = Alignment.Center) {
+				JBIcon(
+					icon,
+					markerColor = if (marker) LocalErrorAreaColors.current.text else Color.Unspecified,
+				)
+			}
 		}
 	}
 }

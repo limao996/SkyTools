@@ -1,20 +1,20 @@
 
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.*
+import androidx.compose.ui.window.WindowPlacement
+import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
 import io.kanro.compose.jetbrains.expui.theme.DarkTheme
 import io.kanro.compose.jetbrains.expui.theme.LightTheme
 import io.kanro.compose.jetbrains.expui.window.JBWindow
+import manager.core.ResourceManager
 import manager.core.ThemeManager
 import manager.ui.PopupManager
-import manager.ui.drawer.DrawerManager
 import manager.ui.topbar.TopBarManager
 import ui.Body
 import ui.topbar.TopBar
 import java.awt.Component
-import java.io.File
 import java.net.URI
 
 const val appTitle = "SkyTools"
@@ -24,13 +24,9 @@ val giteeUri: URI = URI.create("https://gitee.com/limao996/SkyTools")
 lateinit var myWindow: ComposeWindow
 lateinit var component: Component
 
-@OptIn(ExperimentalComposeUiApi::class)
 fun main() {
-	File("assets").apply {
-		if (!exists()) {
-			mkdir()
-		}
-	}
+
+	ResourceManager.init()
 	TopBarManager.init()
 
 	application {
@@ -49,14 +45,6 @@ fun main() {
 			Body()
 			//Popup
 			PopupManager.show()
-		}
-		DrawerManager.load {
-			LeftFirst { }
-			LeftLast { }
-			RightFirst { }
-			RightLast { }
-			BottomFirst { }
-			BottomLast { }
 		}
 	}
 
