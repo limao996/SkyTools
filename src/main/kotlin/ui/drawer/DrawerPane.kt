@@ -32,6 +32,7 @@ import ui.drawer.DividerMode.Auto
 @LayoutScopeMarker
 @Immutable
 open class DrawerPaneScope(val upScope: DrawerContentScope) {
+	var lockHover = false
 	var showAction by mutableStateOf(false)
 	lateinit var scrollState: ScrollState
 }
@@ -54,7 +55,7 @@ fun DrawerContentScope.DrawerPane(
 	drawerPaneScope.scrollState = rememberScrollState()
 
 	Column(modifier.fillMaxSize().onHover {
-		drawerPaneScope.showAction = it
+		if (!drawerPaneScope.lockHover) drawerPaneScope.showAction = it
 	}) {
 		//工具栏
 		toolbar?.let { drawerPaneScope.it() }
@@ -145,7 +146,13 @@ fun DrawerPaneScope.ToolBar(
 				DrawerPaneToolBarScope.Action(
 					"更多", "icons/more.svg"
 				) {
-					PopupManager.open {
+					drawerPaneScope.lockHover = true
+					PopupManager.open({
+						drawerPaneScope.apply {
+							lockHover = false
+							showAction = false
+						}
+					}) {
 						if (items != null) {
 							items()
 							Divider()
