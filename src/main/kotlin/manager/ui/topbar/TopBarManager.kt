@@ -11,6 +11,7 @@ import manager.core.ThemeManager
 import manager.ui.PopupManager
 import ui.common.JBIcon
 import ui.common.MenuItem
+import ui.common.Message
 import ui.common.Title
 import ui.topbar.Action
 import ui.topbar.TopBarScope
@@ -21,10 +22,7 @@ object TopBarManager {
 		actions.add(Group("Github & Theme", -1) {
 			//Github
 			Action(
-				"开源仓库",
-				"limao996",
-				"Gitee: $giteeUri\nGithub: $githubUri",
-				icon = "icons/github.svg"
+				"开源仓库", "limao996", icon = "icons/github.svg"
 			) {
 				val dp = Desktop.getDesktop()
 				if (dp.isSupported(Desktop.Action.BROWSE)) {
@@ -32,6 +30,8 @@ object TopBarManager {
 						Title("开源仓库")
 						MenuItem({
 							dp.browse(giteeUri)
+						}, message = {
+							Message("$giteeUri")
 						}) {
 							JBIcon(
 								"icons/gitee.svg", 16.dp
@@ -40,6 +40,8 @@ object TopBarManager {
 						}
 						MenuItem({
 							dp.browse(githubUri)
+						}, message = {
+							Message("$githubUri")
 						}) {
 							JBIcon(
 								"icons/github.svg", 16.dp
