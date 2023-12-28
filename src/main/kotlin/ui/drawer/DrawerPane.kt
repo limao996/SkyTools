@@ -157,6 +157,7 @@ fun DrawerPaneScope.ToolBar(
 							items()
 							Divider()
 						}
+
 						MenuItem("icons/recovery.svg", "恢复默认") {
 							drawerPaneScope.upScope.manager.apply {
 								size = defaultSize
@@ -173,6 +174,8 @@ fun DrawerPaneScope.ToolBar(
 								}
 							}
 						}
+						Divider()
+						MenuItem("icons/help.svg", "帮助") {}
 					}
 				}
 				DrawerPaneToolBarScope.Action(
