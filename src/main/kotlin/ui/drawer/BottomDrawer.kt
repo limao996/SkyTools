@@ -18,28 +18,30 @@ import utils.boundsRegulate
 fun BottomDrawer() {
 	val splitA = rememberSaveable { DrawerContentScope(BottomDrawerManager, true) }
 	val splitB = rememberSaveable { DrawerContentScope(BottomDrawerManager, false) }
-
-	val modifier = Modifier.fillMaxWidth().height(BottomDrawerManager.size)
-	if (splitA.isShow || splitB.isShow) Row(
-		if (!(splitA.isShow && splitB.isShow)) modifier
-		else modifier
-			.boundsMeasure(BottomDrawerRegulator)
-			.boundsRegulate(BottomDrawerSplitRegulator),
-	) {
-		if (splitA.isShow) Column(
+	val modifier = if (splitA.isShow || splitB.isShow) Modifier.boundsMeasure(BottomDrawerRegulator)
+	else Modifier
+	if (splitA.isShow || splitB.isShow) {
+		Row(
 			Modifier
-				.fillMaxHeight()
-				.weight(1F + BottomDrawerManager.splitWeight)
-				.boundsMeasure(BottomDrawerSplitRegulator)
+				.fillMaxWidth()
+				.height(BottomDrawerManager.size)
+				.boundsRegulate(BottomDrawerSplitRegulator)
+				.then(modifier),
 		) {
-			BottomDrawerManager.splitA?.invoke(splitA)
-		}
-		if (splitA.isShow && splitB.isShow) VDivider(BottomDrawerSplitRegulator.isActivate)
-		if (splitB.isShow) Column(
-			Modifier.fillMaxHeight().weight(1F - BottomDrawerManager.splitWeight)
-		) {
-			BottomDrawerManager.splitB?.invoke(splitB)
+			if (splitA.isShow) Column(
+				Modifier
+					.fillMaxHeight()
+					.weight(1F + BottomDrawerManager.splitWeight)
+					.boundsMeasure(BottomDrawerSplitRegulator)
+			) {
+				BottomDrawerManager.splitA?.invoke(splitA)
+			}
+			if (splitA.isShow && splitB.isShow) VDivider(BottomDrawerSplitRegulator.isActivate)
+			if (splitB.isShow) Column(
+				Modifier.fillMaxHeight().weight(1F - BottomDrawerManager.splitWeight)
+			) {
+				BottomDrawerManager.splitB?.invoke(splitB)
+			}
 		}
 	}
 }
-

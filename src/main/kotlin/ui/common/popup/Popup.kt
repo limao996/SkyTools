@@ -1,4 +1,4 @@
-package ui.common
+package ui.common.popup
 
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.layout.*
@@ -19,7 +19,6 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.InputMode
 import androidx.compose.ui.input.InputModeManager
-import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.nativeKeyCode
@@ -31,6 +30,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import androidx.compose.ui.window.rememberComponentRectPositionProvider
 import androidx.compose.ui.window.rememberCursorPositionProvider
 import io.kanro.compose.jetbrains.expui.control.LocalContextMenuColors
 import io.kanro.compose.jetbrains.expui.style.areaBackground
@@ -40,11 +40,11 @@ import io.kanro.compose.jetbrains.expui.style.areaBorder
 @Composable
 fun JBPopup(
 	isOpen: Boolean,
-	onDismissRequest: () -> Unit = {},
 	minWidth: Dp = 192.dp,
-	onPreviewKeyEvent: ((KeyEvent) -> Boolean) = { false },
-	onKeyEvent: ((KeyEvent) -> Boolean) = { false },
+	focusable: Boolean = true,
+	useCursorPosition: Boolean = true,
 	modifier: Modifier = Modifier,
+	onDismissRequest: () -> Unit = {},
 	content: @Composable PopupScope.() -> Unit,
 ) {
 	if (!isOpen) return
@@ -53,12 +53,21 @@ fun JBPopup(
 	val shape = RoundedCornerShape(8.dp)
 	var focusManager by mutableStateOf<FocusManager?>(null)
 	var inputModeManager by mutableStateOf<InputModeManager?>(null)
-
+	var i = 0
 	Popup(
-		popupPositionProvider = rememberCursorPositionProvider(DpOffset(16.dp, 16.dp)),
-		properties = PopupProperties(focusable = true),
-		onDismissRequest = onDismissRequest,
-		onPreviewKeyEvent = onPreviewKeyEvent,
+		popupPositionProvider = if (useCursorPosition) rememberCursorPositionProvider(
+			DpOffset(
+				8.dp, 8.dp
+			)
+		) else rememberComponentRectPositionProvider(
+			Alignment.TopEnd, Alignment.BottomEnd, DpOffset(0.dp, (-6).dp)
+		),
+		properties = PopupProperties(
+			focusable = focusable,
+			dismissOnBackPress = focusable,
+			dismissOnClickOutside = focusable,
+		),
+		onDismissRequest = { if (++i % 2 == 0) onDismissRequest() },
 		onKeyEvent = {
 			if (it.type == KeyEventType.KeyDown) {
 				when (it.key.nativeKeyCode) {
@@ -119,3 +128,4 @@ fun JBPopup(
 		}
 	}
 }
+

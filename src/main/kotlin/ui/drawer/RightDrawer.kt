@@ -18,25 +18,31 @@ fun RightDrawer() {
 	val splitA = rememberSaveable { DrawerContentScope(RightDrawerManager, true) }
 	val splitB = rememberSaveable { DrawerContentScope(RightDrawerManager, false) }
 
-	val modifier = Modifier.fillMaxHeight().width(RightDrawerManager.size)
-	if (splitA.isShow || splitB.isShow) Column(
-		if (!(splitA.isShow && splitB.isShow)) modifier
-		else modifier.boundsMeasure(RightDrawerRegulator).boundsRegulate(RightDrawerSplitRegulator),
-	) {
-		if (splitA.isShow) Column(
+	val modifier = if (splitA.isShow || splitB.isShow) Modifier.boundsMeasure(RightDrawerRegulator)
+	else Modifier
+
+	if (splitA.isShow || splitB.isShow) {
+		Column(
 			Modifier
-				.fillMaxWidth()
-				.weight(1F + RightDrawerManager.splitWeight)
-				.boundsMeasure(RightDrawerSplitRegulator)
+				.fillMaxHeight()
+				.width(RightDrawerManager.size)
+				.boundsRegulate(RightDrawerSplitRegulator)
+				.then(modifier)
 		) {
-			RightDrawerManager.splitA?.invoke(splitA)
-		}
-		if (splitA.isShow && splitB.isShow) HDivider(RightDrawerSplitRegulator.isActivate)
-		if (splitB.isShow) Column(
-			Modifier.fillMaxWidth().weight(1F - RightDrawerManager.splitWeight)
-		) {
-			RightDrawerManager.splitB?.invoke(splitB)
+			if (splitA.isShow) Column(
+				Modifier
+					.fillMaxWidth()
+					.weight(1F + RightDrawerManager.splitWeight)
+					.boundsMeasure(RightDrawerSplitRegulator)
+			) {
+				RightDrawerManager.splitA?.invoke(splitA)
+			}
+			if (splitA.isShow && splitB.isShow) HDivider(RightDrawerSplitRegulator.isActivate)
+			if (splitB.isShow) Column(
+				Modifier.fillMaxWidth().weight(1F - RightDrawerManager.splitWeight)
+			) {
+				RightDrawerManager.splitB?.invoke(splitB)
+			}
 		}
 	}
 }
-

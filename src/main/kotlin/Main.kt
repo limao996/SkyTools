@@ -1,3 +1,4 @@
+
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -10,11 +11,9 @@ import io.kanro.compose.jetbrains.expui.window.JBWindow
 import manager.core.ResourceManager
 import manager.core.ThemeManager
 import manager.ui.PopupManager
-import manager.ui.drawer.DrawerManager
+import manager.ui.sidebar.SideBarManager
 import manager.ui.topbar.TopBarManager
 import ui.Body
-import ui.drawer.DrawerPane
-import ui.drawer.ToolBar
 import ui.topbar.TopBar
 import java.awt.Component
 import java.net.URI
@@ -30,6 +29,7 @@ fun main() {
 
 	ResourceManager.init()
 	TopBarManager.init()
+	SideBarManager.init()
 
 	application {
 		JBWindow(::exitApplication,
@@ -47,14 +47,6 @@ fun main() {
 			Body()
 			//Popup
 			PopupManager.show()
-		}
-
-		DrawerManager.load {
-			LeftLast {
-				DrawerPane(toolbar = {
-					ToolBar(title = "测试")
-				})
-			}
 		}
 	}
 

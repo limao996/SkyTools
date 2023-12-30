@@ -2,52 +2,31 @@ package ui.sidebar
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.kanro.compose.jetbrains.expui.control.ToolBarActionButton
-import io.kanro.compose.jetbrains.expui.style.LocalErrorAreaColors
-import ui.common.FixedTooltip
-import ui.common.FixedTooltipPlacement
+import manager.ui.sidebar.SideBarManager
 import ui.common.HSubDivider
-import ui.common.JBIcon
 
 @Composable
 fun LeftBar() {
-	Column(
-		Modifier.fillMaxHeight().width(40.dp).padding(vertical = 4.dp),
-		verticalArrangement = Arrangement.spacedBy(10.dp),
-		horizontalAlignment = Alignment.CenterHorizontally
-	) {
-		var selected by remember { mutableStateOf(0) }
-		FixedTooltip(
-			"Github", delayMillis = 0, placement = FixedTooltipPlacement.Right
+	with(SideBarManager) {
+		sortLeftBar()
+		if (leftFirst.isNotEmpty() || leftLast.isNotEmpty() || bottomFirst.isNotEmpty()) Column(
+			Modifier.fillMaxHeight().width(40.dp).padding(vertical = 4.dp),
+			verticalArrangement = Arrangement.spacedBy(10.dp),
+			horizontalAlignment = Alignment.CenterHorizontally
 		) {
-			ToolBarActionButton(
-				selected == 0,
-				{ },
-				modifier = Modifier.size(30.dp),
-			) {
-				Box(contentAlignment = Alignment.Center) {
-					JBIcon(
-						"icons/github.svg"
-					)
-				}
+			for (action in leftFirst) {
+				action.content(LeftFirstBuilder)
 			}
-		}
-		HSubDivider()
-		ToolBarActionButton(
-			selected == 1, { selected = 1 }, modifier = Modifier.size(30.dp)
-		) {
-			Box(contentAlignment = Alignment.Center) {
-				JBIcon(
-					"icons/github.svg",
-					markerColor = LocalErrorAreaColors.current.text,
-				)
+			if (leftFirst.isNotEmpty() && leftLast.isNotEmpty()) HSubDivider()
+			for (action in leftLast) {
+				action.content(LeftLastBuilder)
+			}
+			Spacer(Modifier.weight(1F))
+			for (action in bottomFirst) {
+				action.content(BottomFirstBuilder)
 			}
 		}
 	}

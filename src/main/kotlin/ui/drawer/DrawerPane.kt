@@ -25,7 +25,13 @@ import manager.ui.PopupManager
 import manager.ui.drawer.BottomDrawerManager
 import manager.ui.drawer.LeftDrawerManager
 import manager.ui.drawer.RightDrawerManager
-import ui.common.*
+import manager.ui.sidebar.SideBarManager
+import ui.common.FixedTooltip
+import ui.common.HDivider
+import ui.common.JBIcon
+import ui.common.popup.Divider
+import ui.common.popup.MenuItem
+import ui.common.popup.PopupScope
 import ui.drawer.DividerMode.Auto
 
 
@@ -181,7 +187,29 @@ fun DrawerPaneScope.ToolBar(
 				DrawerPaneToolBarScope.Action(
 					"隐藏", "icons/hide.svg"
 				) {
-					drawerPaneScope.upScope.hide()
+					val upScope = drawerPaneScope.upScope
+					upScope.hide()
+					val manager = upScope.manager
+					val isSplitA = upScope.isSplitA
+					when (manager) {
+						LeftDrawerManager -> if (isSplitA) {
+							SideBarManager.LeftFirstBuilder.selected = null
+						} else {
+							SideBarManager.LeftLastBuilder.selected = null
+						}
+
+						RightDrawerManager -> if (isSplitA) {
+							SideBarManager.RightFirstBuilder.selected = null
+						} else {
+							SideBarManager.RightLastBuilder.selected = null
+						}
+
+						BottomDrawerManager -> if (isSplitA) {
+							SideBarManager.BottomFirstBuilder.selected = null
+						} else {
+							SideBarManager.BottomLastBuilder.selected = null
+						}
+					}
 				}
 			}
 		}

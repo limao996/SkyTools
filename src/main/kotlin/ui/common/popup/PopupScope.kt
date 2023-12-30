@@ -1,4 +1,4 @@
-package ui.common
+package ui.common.popup
 
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.clickable
@@ -45,11 +45,13 @@ import io.kanro.compose.jetbrains.expui.style.areaBorder
 import io.kanro.compose.jetbrains.expui.theme.DarkTheme
 import io.kanro.compose.jetbrains.expui.theme.LightTheme
 import manager.core.ThemeManager
+import ui.common.HSubDivider
+import ui.common.JBIcon
 
 @LayoutScopeMarker
 @Immutable
 class PopupScope(
-	val onDismissRequest: () -> Unit,
+	val rootOnDismissRequest: () -> Unit,
 ) {
 	var hasIcon by mutableStateOf(false)
 }
@@ -80,7 +82,7 @@ fun PopupScope.MenuItem(
 		onFocusEvent?.let { it1 -> it1(it.isFocused) }
 	}.clickable(
 		enabled = enabled, onClick = {
-			if (autoDismiss) onDismissRequest()
+			if (autoDismiss) rootOnDismissRequest()
 			onClick()
 		}, interactionSource = interactionSource, indication = HoverOrPressedIndication(shape)
 	).fillMaxWidth().padding(contentPadding).defaultMinSize(minHeight = 24.dp),
@@ -169,28 +171,23 @@ fun PopupScope.ExtendMenuItem(
 ) {
 	var isOpen by remember { mutableStateOf(false) }
 	Row {
-		this@ExtendMenuItem.SubPopup(isOpen) {
+		this@ExtendMenuItem.SubPopup(isOpen, onDismissRequest = {
+			isOpen = false
+		}) {
 			content()
 		}
-		this@ExtendMenuItem.MenuItem({ },
-			enabled,
-			false,
-			contentPadding,
-			shape,
-			interactionSource,
-			{
-				isOpen = it
-			},
-			{
-				if (message != null) Message(message)
-				JBIcon(
-					"icons/right.svg", 14.dp, colorFilter = ColorFilter.tint(
-						if (ThemeManager.current.isDark()) DarkTheme.Grey7
-						else LightTheme.Grey7
-					)
+		this@ExtendMenuItem.MenuItem({
+			isOpen = true
+		}, enabled, false, contentPadding, shape, interactionSource, { }, {
+			if (message != null) Message(message)
+			JBIcon(
+				"icons/right.svg", 14.dp, colorFilter = ColorFilter.tint(
+					if (ThemeManager.current.isDark()) DarkTheme.Grey7
+					else LightTheme.Grey7
 				)
+			)
 
-			}) {
+		}) {
 			if (icon == "") hasIcon = true
 			if (icon != null && icon != "") {
 				hasIcon = true
@@ -238,7 +235,7 @@ fun PopupScope.SubPopup(
 	isOpen: Boolean,
 	minWidth: Dp = 192.dp,
 	modifier: Modifier = Modifier,
-	onDismissRequest: (() -> Unit)? = {},
+	onDismissRequest: () -> Unit = {},
 	content: @Composable PopupScope.() -> Unit,
 ) {
 	if (!isOpen) return
@@ -247,19 +244,19 @@ fun PopupScope.SubPopup(
 	val shape = RoundedCornerShape(8.dp)
 	var focusManager by mutableStateOf<FocusManager?>(null)
 	var inputModeManager by mutableStateOf<InputModeManager?>(null)
+	var i = 0
 	Popup(
 		popupPositionProvider = rememberComponentRectPositionProvider(
 			Alignment.TopEnd, Alignment.BottomEnd, DpOffset(0.dp, (-6).dp)
 		),
 		properties = PopupProperties(
-			focusable = false,
-			dismissOnBackPress = false,
-			dismissOnClickOutside = false,
+			focusable = true,
 		),
-		onDismissRequest = onDismissRequest,
+		onDismissRequest = { if (++i % 2 == 0) onDismissRequest() },
 		onKeyEvent = {
 			if (it.type == KeyEventType.KeyDown) {
 				when (it.key.nativeKeyCode) {
+
 					java.awt.event.KeyEvent.VK_ESCAPE -> {
 						onDismissRequest()
 						true
