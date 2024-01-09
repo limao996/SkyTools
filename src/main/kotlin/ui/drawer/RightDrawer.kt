@@ -17,17 +17,21 @@ import utils.boundsRegulate
 fun RightDrawer() {
 	val splitA = rememberSaveable { DrawerContentScope(RightDrawerManager, true) }
 	val splitB = rememberSaveable { DrawerContentScope(RightDrawerManager, false) }
+	val rootModifier =
+		if (splitA.isShow || splitB.isShow) Modifier.boundsMeasure(RightDrawerRegulator)
+		else Modifier
 
-	val modifier = if (splitA.isShow || splitB.isShow) Modifier.boundsMeasure(RightDrawerRegulator)
-	else Modifier
+	val splitModifier =
+		if (splitA.isShow && splitB.isShow) Modifier.boundsRegulate(RightDrawerSplitRegulator)
+		else Modifier
 
 	if (splitA.isShow || splitB.isShow) {
 		Column(
 			Modifier
 				.fillMaxHeight()
 				.width(RightDrawerManager.size)
-				.boundsRegulate(RightDrawerSplitRegulator)
-				.then(modifier)
+				.then(rootModifier)
+				.then(splitModifier),
 		) {
 			if (splitA.isShow) Column(
 				Modifier

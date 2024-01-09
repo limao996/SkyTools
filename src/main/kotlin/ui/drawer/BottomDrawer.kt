@@ -18,15 +18,22 @@ import utils.boundsRegulate
 fun BottomDrawer() {
 	val splitA = rememberSaveable { DrawerContentScope(BottomDrawerManager, true) }
 	val splitB = rememberSaveable { DrawerContentScope(BottomDrawerManager, false) }
-	val modifier = if (splitA.isShow || splitB.isShow) Modifier.boundsMeasure(BottomDrawerRegulator)
-	else Modifier
+
+	val rootModifier =
+		if (splitA.isShow || splitB.isShow) Modifier.boundsMeasure(BottomDrawerRegulator)
+		else Modifier
+
+	val splitModifier =
+		if (splitA.isShow && splitB.isShow) Modifier.boundsRegulate(BottomDrawerSplitRegulator)
+		else Modifier
+
 	if (splitA.isShow || splitB.isShow) {
 		Row(
 			Modifier
 				.fillMaxWidth()
 				.height(BottomDrawerManager.size)
-				.boundsRegulate(BottomDrawerSplitRegulator)
-				.then(modifier),
+				.then(rootModifier)
+				.then(splitModifier),
 		) {
 			if (splitA.isShow) Column(
 				Modifier

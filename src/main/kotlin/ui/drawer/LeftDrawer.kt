@@ -18,16 +18,21 @@ fun LeftDrawer() {
 	val splitA = rememberSaveable { DrawerContentScope(LeftDrawerManager, true) }
 	val splitB = rememberSaveable { DrawerContentScope(LeftDrawerManager, false) }
 
-	val modifier = if (splitA.isShow || splitB.isShow) Modifier.boundsMeasure(LeftDrawerRegulator)
-	else Modifier
+	val rootModifier =
+		if (splitA.isShow || splitB.isShow) Modifier.boundsMeasure(LeftDrawerRegulator)
+		else Modifier
+
+	val splitModifier =
+		if (splitA.isShow && splitB.isShow) Modifier.boundsRegulate(LeftDrawerSplitRegulator)
+		else Modifier
 
 	if (splitA.isShow || splitB.isShow) {
 		Column(
 			Modifier
 				.fillMaxHeight()
 				.width(LeftDrawerManager.size)
-				.boundsRegulate(LeftDrawerSplitRegulator)
-				.then(modifier)
+				.then(rootModifier)
+				.then(splitModifier)
 		) {
 			if (splitA.isShow) Column(
 				Modifier

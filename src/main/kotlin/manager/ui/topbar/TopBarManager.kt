@@ -15,8 +15,8 @@ import java.awt.Desktop
 
 object TopBarManager {
 	fun init() {
-		load {
-			Actions(Group("Github & Theme", -1) {
+		push {
+			ActionGroup("Github & Theme", -1) {
 				//Github
 				Action(
 					"开源仓库", "limao996", icon = "icons/github.svg"
@@ -57,7 +57,7 @@ object TopBarManager {
 					}
 					UIConfig.theme = ThemeManager.current
 				}
-			})
+			}
 		}
 	}
 
@@ -75,7 +75,7 @@ object TopBarManager {
 		actions.sortByDescending { group -> group.priority }
 	}
 
-	fun load(fn: TopBarManager.() -> Unit) {
+	fun push(fn: TopBarManager.() -> Unit) {
 		TopBarManager.fn()
 	}
 
@@ -85,11 +85,27 @@ object TopBarManager {
 		val content: @Composable() TopBarScope.() -> Unit,
 	)
 
-	fun Header(group: Group) {
-		header.add(group)
+	fun HeaderGroup(
+		tag: String,
+		priority: Int,
+		content: @Composable() TopBarScope.() -> Unit,
+	) {
+		header.add(
+			Group(
+				tag, priority, content
+			)
+		)
 	}
 
-	fun Actions(group: Group) {
-		actions.add(group)
+	fun ActionGroup(
+		tag: String,
+		priority: Int,
+		content: @Composable() TopBarScope.() -> Unit,
+	) {
+		actions.add(
+			Group(
+				tag, priority, content
+			)
+		)
 	}
 }
