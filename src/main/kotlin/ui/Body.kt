@@ -2,7 +2,11 @@ package ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.runtime.Composable
@@ -21,6 +25,7 @@ import ui.common.HSubDivider
 import ui.common.JBIcon
 import ui.common.VDivider
 import ui.drawer.*
+import ui.infobar.InfoBar
 import ui.sidebar.LeftBar
 import ui.sidebar.RightBar
 import utils.boundsRegulate
@@ -115,10 +120,6 @@ fun Body() {
 		}
 		//信息栏
 		HDivider()
-		Row(
-			Modifier.fillMaxWidth().height(30.dp).padding(horizontal = 4.dp),
-			horizontalArrangement = Arrangement.spacedBy(10.dp),
-			verticalAlignment = Alignment.CenterVertically
-		) {}
+		InfoBar()
 	}
 }

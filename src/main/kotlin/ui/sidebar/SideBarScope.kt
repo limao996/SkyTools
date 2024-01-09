@@ -1,11 +1,15 @@
 package ui.sidebar
 
+import androidx.compose.foundation.layout.LayoutScopeMarker
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import manager.ui.drawer.DrawerManager
 import manager.ui.sidebar.SideBarManager.SideBarAction
 import ui.drawer.DrawerContentScope
 import ui.sidebar.SideBarBuilder.Placement
 
+@LayoutScopeMarker
+@Immutable
 class SideBarScope(val upScope: SideBarBuilder, val self: SideBarAction) {
 
 	val isSelected: Boolean

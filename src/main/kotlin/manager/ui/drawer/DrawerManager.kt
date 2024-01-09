@@ -40,7 +40,7 @@ object DrawerManager {
 			BottomDrawerManager.splitB = value
 		}
 
-	fun clear() {
+	fun reset() {
 		leftFirst = null
 		leftLast = null
 		rightFirst = null
@@ -50,7 +50,7 @@ object DrawerManager {
 	}
 
 	fun load(content: DrawerScope.() -> Unit) {
-		clear()
+		reset()
 		DrawerScope.content()
 	}
 }

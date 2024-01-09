@@ -2,12 +2,59 @@ package manager.ui.sidebar
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
+import ui.drawer.DividerMode.Show
+import ui.drawer.DrawerPane
+import ui.drawer.ToolBar
 import ui.sidebar.SideBarBuilder
 import ui.sidebar.SideBarBuilder.Placement
 
 object SideBarManager {
 
 	fun init() {
+		push {
+			LeftFirst {
+				Action("", -1, "icons/github.svg", "测试") {
+					if (!isSelected) select {
+						DrawerPane(toolbar = { ToolBar("测试") })
+					} else cancel()
+				}
+			}
+			LeftLast {
+				Action("", -1, "icons/github.svg", "测试") {
+					if (!isSelected) select {
+						DrawerPane(toolbar = { ToolBar("测试") })
+					} else cancel()
+				}
+			}
+			RightFirst {
+				Action("", -1, "icons/github.svg", "测试") {
+					if (!isSelected) select {
+						DrawerPane(toolbar = { ToolBar("测试") })
+					} else cancel()
+				}
+			}
+			RightLast {
+				Action("", -1, "icons/github.svg", "测试") {
+					if (!isSelected) select {
+						DrawerPane(toolbar = { ToolBar("测试") })
+					} else cancel()
+				}
+			}
+			BottomFirst {
+				Action("", -1, "icons/github.svg", "测试") {
+					if (!isSelected) select {
+						DrawerPane(dividerMode = Show, toolbar = { ToolBar("测试") })
+					} else cancel()
+				}
+			}
+			BottomLast {
+				Action("", -1, "icons/github.svg", "测试") {
+					if (!isSelected) select {
+						DrawerPane(dividerMode = Show, toolbar = { ToolBar("测试") })
+					} else cancel()
+				}
+			}
+		}
 	}
 
 	val leftFirst = mutableStateListOf<SideBarAction>()
@@ -24,7 +71,7 @@ object SideBarManager {
 	val RightLastBuilder = SideBarBuilder(Placement.RightLast)
 	val BottomLastBuilder = SideBarBuilder(Placement.BottomLast)
 
-	fun clear() {
+	fun reset() {
 		leftFirst.clear()
 		leftLast.clear()
 		bottomFirst.clear()

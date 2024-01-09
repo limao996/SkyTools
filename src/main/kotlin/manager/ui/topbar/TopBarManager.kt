@@ -64,7 +64,7 @@ object TopBarManager {
 	val header = mutableStateListOf<Group>()
 	val actions = mutableStateListOf<Group>()
 
-	fun clear() {
+	fun reset() {
 		header.clear()
 		actions.clear()
 		init()

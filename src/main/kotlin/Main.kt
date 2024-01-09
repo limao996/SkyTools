@@ -12,6 +12,7 @@ import manager.core.ResourceManager
 import manager.core.ThemeManager
 import manager.ui.PopupManager
 import manager.ui.sidebar.SideBarManager
+import manager.ui.topbar.InfoBarManager
 import manager.ui.topbar.TopBarManager
 import ui.Body
 import ui.topbar.TopBar
@@ -28,6 +29,7 @@ lateinit var component: Component
 fun main() {
 
 	ResourceManager.init()
+	InfoBarManager.init()
 	TopBarManager.init()
 	SideBarManager.init()
 
