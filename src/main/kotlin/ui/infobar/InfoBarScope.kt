@@ -71,7 +71,7 @@ object InfoBarScope {
 						JBIcon(
 							it,
 							iconSize,
-							modifier = Modifier.alpha(if (isHover) 1F else 0.6F).then(iconModifier)
+							modifier = Modifier.alpha(if (isHover) 1F else 0.8F).then(iconModifier)
 						)
 					}
 					label?.let {

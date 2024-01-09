@@ -1,8 +1,6 @@
 package manager.ui.topbar
 
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import myWindow
 import ui.infobar.InfoBarScope
 
@@ -12,8 +10,9 @@ object InfoBarManager {
 			RightGroup("Window", -1) {
 				var isAlwaysOnTop by remember { mutableStateOf(myWindow.isAlwaysOnTop) }
 				ActionButton(
-					icon = "icons/top.svg",
-					iconModifier = Modifier.rotate(if (isAlwaysOnTop) 0F else 45F)
+					icon = if (isAlwaysOnTop) "icons/lock.svg" else "icons/unlock.svg",
+					tooltip = "窗口置顶",
+					message = if (isAlwaysOnTop) "开启" else "关闭",
 				) {
 					isAlwaysOnTop = !isAlwaysOnTop
 					myWindow.isAlwaysOnTop = isAlwaysOnTop

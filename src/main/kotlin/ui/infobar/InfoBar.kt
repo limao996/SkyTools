@@ -11,7 +11,7 @@ import manager.ui.topbar.InfoBarManager
 fun InfoBar() {
 	InfoBarManager.sort()
 	Box(
-		Modifier.fillMaxWidth().height(30.dp).padding(horizontal = 12.dp),
+		Modifier.fillMaxWidth().height(30.dp).padding(horizontal = 10.dp),
 		contentAlignment = Alignment.Center
 	) {
 		for (v in InfoBarManager.center) v.content(InfoBarScope)
