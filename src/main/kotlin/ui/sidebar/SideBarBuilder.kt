@@ -47,7 +47,7 @@ class SideBarBuilder(
 		detail: String? = null,
 		marker: Boolean = false,
 		onClick: SideBarScope.() -> Unit,
-	) {
+	): SideBarAction {
 		lateinit var action: SideBarAction
 		action = SideBarAction(
 			tag, priority
@@ -57,6 +57,7 @@ class SideBarBuilder(
 			) { SideBarScope(this, action).onClick() }
 		}
 		list.add(action)
+		return action
 	}
 }
 

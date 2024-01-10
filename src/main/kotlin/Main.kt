@@ -12,6 +12,7 @@ import manager.core.ResourceManager
 import manager.core.ThemeManager
 import manager.ui.PopupManager
 import manager.ui.sidebar.SideBarManager
+import manager.ui.tabpage.TabPageManager
 import manager.ui.topbar.InfoBarManager
 import manager.ui.topbar.TopBarManager
 import ui.Body
@@ -32,6 +33,7 @@ fun main() {
 	InfoBarManager.init()
 	TopBarManager.init()
 	SideBarManager.init()
+	TabPageManager.init()
 
 	application {
 		JBWindow(::exitApplication,
