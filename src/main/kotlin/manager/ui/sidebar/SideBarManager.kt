@@ -11,6 +11,7 @@ import ui.sidebar.SideBarBuilder.Placement
 object SideBarManager {
 
 	fun init() {
+
 		push {
 			LeftFirst {
 				Action("", -1, "icons/github.svg", "测试") {
@@ -94,12 +95,8 @@ object SideBarManager {
 	}
 
 	fun sort() {
-		leftFirst.sortBy { group -> group.priority }
-		leftLast.sortBy { group -> group.priority }
-		bottomFirst.sortBy { group -> group.priority }
-		rightFirst.sortBy { group -> group.priority }
-		rightLast.sortBy { group -> group.priority }
-		bottomLast.sortBy { group -> group.priority }
+		sortLeftBar()
+		sortRightBar()
 	}
 
 	fun push(fn: SideBarManager.() -> Unit) {
@@ -113,34 +110,21 @@ object SideBarManager {
 		val content: @Composable() SideBarBuilder.() -> Unit,
 	)
 
-	fun LeftFirst(content: SideBarBuilder.() -> Unit) {
-		val builder = SideBarBuilder(Placement.LeftFirst)
-		builder.content()
-	}
-
-	fun LeftLast(content: SideBarBuilder.() -> Unit) {
-		val builder = SideBarBuilder(Placement.LeftLast)
-		builder.content()
-	}
+	fun LeftFirst(content: SideBarBuilder.() -> Unit) = LeftFirstBuilder.content()
 
 
-	fun RightFirst(content: SideBarBuilder.() -> Unit) {
-		val builder = SideBarBuilder(Placement.RightFirst)
-		builder.content()
-	}
+	fun LeftLast(content: SideBarBuilder.() -> Unit) = LeftLastBuilder.content()
 
-	fun RightLast(content: SideBarBuilder.() -> Unit) {
-		val builder = SideBarBuilder(Placement.RightLast)
-		builder.content()
-	}
 
-	fun BottomFirst(content: SideBarBuilder.() -> Unit) {
-		val builder = SideBarBuilder(Placement.BottomFirst)
-		builder.content()
-	}
+	fun RightFirst(content: SideBarBuilder.() -> Unit) = RightFirstBuilder.content()
 
-	fun BottomLast(content: SideBarBuilder.() -> Unit) {
-		val builder = SideBarBuilder(Placement.BottomLast)
-		builder.content()
-	}
+
+	fun RightLast(content: SideBarBuilder.() -> Unit) = RightLastBuilder.content()
+
+
+	fun BottomFirst(content: SideBarBuilder.() -> Unit) = BottomFirstBuilder.content()
+
+
+	fun BottomLast(content: SideBarBuilder.() -> Unit) = BottomLastBuilder.content()
+
 }
