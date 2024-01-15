@@ -1,4 +1,3 @@
-
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -21,6 +20,7 @@ import java.awt.Component
 import java.net.URI
 
 const val appTitle = "SkyTools"
+const val sdkCode = 0
 val githubUri: URI = URI.create("https://github.com/limao996/SkyTools")
 val giteeUri: URI = URI.create("https://gitee.com/limao996/SkyTools")
 

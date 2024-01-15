@@ -16,3 +16,4 @@ pluginManagement {
 
 rootProject.name = "SkyTools-Compose"
 include("fastkv")
+include("plugin")
