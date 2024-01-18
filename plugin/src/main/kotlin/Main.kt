@@ -9,7 +9,6 @@ object Main : PluginBuilder() {
 			introduce {
 				name = "Core"
 				description = "SkyTools 核心服务"
-
 				tag("核心")
 				tag("工具")
 			}
