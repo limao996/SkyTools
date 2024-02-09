@@ -13,11 +13,6 @@ abstract class PluginService : Service {
 		dataDir.mkdirs()
 	}
 
-	fun setDataDir(dir: File) {
-		dataDir = dir
-	}
-
-	fun getDataDir() = dataDir
 
 	fun setThemeMode(mode: ThemeMode) {
 		ThemeManager.current = when (mode) {
